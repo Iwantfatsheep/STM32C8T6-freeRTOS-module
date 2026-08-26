@@ -9,9 +9,9 @@ void myTask(void *arg)
 	while(1)
 	{
 		GPIO_ResetBits(GPIOC, GPIO_Pin_13);
-		vTaskDelay(500);
+		vTaskDelay(pdMS_TO_TICKS(500));
 		GPIO_SetBits(GPIOC, GPIO_Pin_13);
-		vTaskDelay(500);
+		vTaskDelay(pdMS_TO_TICKS(500));
 	}
 }
 	

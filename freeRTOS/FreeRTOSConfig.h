@@ -53,7 +53,7 @@
  * settings.  Your application will certainly need a different value so set this
  * correctly. This is very often, but not always, equal to the main system clock
  * frequency. */
-#define configCPU_CLOCK_HZ    ( ( unsigned long ) 20000000 )
+#define configCPU_CLOCK_HZ    ( ( unsigned long ) 108000000 )  /* 实际晶振12MHz×PLL9=108MHz */
 
 /* configSYSTICK_CLOCK_HZ is an optional parameter for ARM Cortex-M ports only.
  *
@@ -500,7 +500,7 @@
  * than itself. The application writer needs to explicitly grant the
  * unprivileged task access to the kernel objects it needs using the APIs
  * provided for the same. Defaults to 0 if left undefined. */
-#define configENABLE_ACCESS_CONTROL_LIST                          1
+#define configENABLE_ACCESS_CONTROL_LIST                          0  /* MPU 已禁用，关闭 ACL */
 
 /******************************************************************************/
 /* SMP( Symmetric MultiProcessing ) Specific Configuration definitions. *******/
@@ -590,22 +590,22 @@
  * to enable the TrustZone support in FreeRTOS ARMv8-M ports which allows the
  * non-secure FreeRTOS tasks to call the (non-secure callable) functions
  * exported from secure side. */
-#define configENABLE_TRUSTZONE            1
+#define configENABLE_TRUSTZONE            0  /* Cortex-M3 (STM32F103) 不支持 TrustZone */
 
 /* If the application writer does not want to use TrustZone, but the hardware
  * does not support disabling TrustZone then the entire application (including
  * the FreeRTOS scheduler) can run on the secure side without ever branching to
  * the non-secure side. To do that, in addition to setting
  * configENABLE_TRUSTZONE to 0, also set configRUN_FREERTOS_SECURE_ONLY to 1. */
-#define configRUN_FREERTOS_SECURE_ONLY    1
+#define configRUN_FREERTOS_SECURE_ONLY    0  /* Cortex-M3 (STM32F103) 不支持 TrustZone */
 
 /* Set configENABLE_MPU to 1 to enable the Memory Protection Unit (MPU), or 0
  * to leave the Memory Protection Unit disabled. */
-#define configENABLE_MPU                  1
+#define configENABLE_MPU                  0  /* STM32F103C8 无 MPU，禁用避免异常 */
 
 /* Set configENABLE_FPU to 1 to enable the Floating Point Unit (FPU), or 0
  * to leave the Floating Point Unit disabled. */
-#define configENABLE_FPU                  1
+#define configENABLE_FPU                  0  /* Cortex-M3 无 FPU（需 Cortex-M4F 及以上） */
 
 /* Set configENABLE_MVE to 1 to enable the M-Profile Vector Extension (MVE)
  * support, or 0 to leave the MVE support disabled. This option is only
@@ -613,7 +613,7 @@
  * M-Profile Vector Extension (MVE) is available only on these architectures.
  * configENABLE_MVE must be left undefined, or defined to 0 for the
  * Cortex-M23,Cortex-M33 and Cortex-M35P ports. */
-#define configENABLE_MVE                  1
+#define configENABLE_MVE                  0  /* Cortex-M3 不支持 MVE 向量扩展 */
 
 /******************************************************************************/
 /* ARMv7-M and ARMv8-M port Specific Configuration definitions. ***************/

@@ -39,6 +39,7 @@ FreeRTOS 内核层
 
 | 配置项 | 当前值 | 作用 |
 | --- | ---: | --- |
+| `configCPU_CLOCK_HZ` | `72000000` | FreeRTOS 使用的 Cortex-M3 内核时钟，需与系统时钟一致 |
 | `configTICK_RATE_HZ` | `100` | RTOS 节拍频率为 100 Hz，1 tick 理论上为 10 ms |
 | `configUSE_PREEMPTION` | `1` | 启用抢占式调度 |
 | `configUSE_TIME_SLICING` | `0` | 同优先级就绪任务不会仅因 Tick 到来而轮转 |
@@ -97,12 +98,9 @@ xTaskCreate(myTask, "my_Task", 128, NULL, 2, &myTaskHandler);
 
 ### 时钟频率必须一致
 
-当前工程存在一个需要在实际硬件上确认的配置差异：
+`Start/system_stm32f10x.c` 当前启用 `SYSCLK_FREQ_72MHz`，因此 `configCPU_CLOCK_HZ` 已设置为 `72000000`。`Project.uvprojx` 中的 `CLOCK(12000000)` 是 Keil 调试/目标选项中的时钟声明，不等同于芯片运行时钟；如果实际硬件的外部晶振或系统时钟配置发生变化，应同步修改系统时钟和 `configCPU_CLOCK_HZ`。
 
-- `Project.uvprojx` 的目标配置声明 `CLOCK(12000000)`。
-- `freeRTOS/FreeRTOSConfig.h` 设置 `configCPU_CLOCK_HZ` 为 `20000000`。
-
-`configCPU_CLOCK_HZ` 应与实际驱动 SysTick 的内核时钟一致，否则 `configTICK_RATE_HZ` 对应的真实时间会产生偏差。烧录前请根据 `system_stm32f10x.c` 的实际时钟树和芯片配置统一这两个设置；README 不自动替用户修改，因为实际板卡外部晶振和系统时钟可能不同。
+`configCPU_CLOCK_HZ` 应与实际驱动 SysTick 的内核时钟一致，否则 `configTICK_RATE_HZ` 对应的真实时间会产生偏差。
 
 ### 中断优先级规则
 
